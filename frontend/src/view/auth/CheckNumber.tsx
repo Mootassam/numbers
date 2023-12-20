@@ -1,22 +1,33 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
+import authAxios from "../../modules/shared/axios/authAxios";
+
 
 function CheckNumber() {
   const [active, setActive] = useState("add");
   const [number, setNumber] = useState("");
   const [error, setError] = useState("");
   const [showError, setShowError] = useState(false);
+  const [success, setSuccess] = useState(false);
   const SubmitNumber = () => {
     if (!number || number === "0") {
       setError("Write a valid number. Thank you.");
       setShowError(true);
-
       // Reset showError to false after 3 seconds
+    } else {
+      const payload = authAxios
+        .post("/check/addNumber", { number: number })
+        .then((res) => setSuccess(true))
+        .catch((error) => {
+          setError(error.response.data), setShowError(true);
+        });
     }
   };
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       setShowError(false);
+      setSuccess(false)
       setError("");
     }, 3000);
 
@@ -81,6 +92,8 @@ function CheckNumber() {
             {error}
           </span>
         )}
+
+        {success && <span className="bg-green-500"> Number added</span>}
       </div>
     </div>
   );

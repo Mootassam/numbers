@@ -1,7 +1,7 @@
 export default class Error400 extends Error {
   code: Number;
 
-  constructor(language?, messageCode?, ...args) {
+  constructor(messageCode?) {
     let message;
 
     if (messageCode) {

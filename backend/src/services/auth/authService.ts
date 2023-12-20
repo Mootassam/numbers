@@ -28,7 +28,6 @@ class AuthService {
     }
   }
   static async Signin(email, password, options) {
-   
     try {
       email = email.toLowerCase();
       const user = await UserRepository.findByEmail(email);
@@ -36,32 +35,41 @@ class AuthService {
         throw new Error400("User Not Found");
       }
 
-      
-        const currentPassword = await UserRepository.findByPassword(user);
-        if (!currentPassword) {
-          throw new Error400("Passowrd Wrong");
+      const currentPassword = await UserRepository.findByPassword(user);
+      if (!currentPassword) {
+        throw new Error400("Passowrd Wrong");
+      }
 
+      const passwordsMatch = await bcrypt.compare(
+        password,
+        currentPassword?.password
+      );
+      if (!passwordsMatch) {
+        throw new Error400("Passowrd Wrong");
+      }
+
+      const token = jwt.sign(
+        { id: user?._id },
+        "GENERATE_SOME_RANDOM_UUID_HERE",
+        {
+          expiresIn: 360,
         }
-
-        const passwordsMatch = await bcrypt.compare(
-          password,
-          currentPassword?.password
-        );
-        if (!passwordsMatch) {
-          throw new Error400("Passowrd Wrong");
-        }
-
-        const token = jwt.sign(
-          { id: user?._id },
-          "GENERATE_SOME_RANDOM_UUID_HERE",
-          {
-            expiresIn: 360,
-          }
-        );
-        return token;
-    
+      );
+      return token;
     } catch (error) {
+      throw error;
+    }
+  }
 
+  static async saveNumber(number, options) {
+    try {
+      const data = await UserRepository.Finduplicate(number);
+      if (data) {
+        throw new Error400("Number alreday exist");
+      }
+      const payload = await UserRepository.saveNumber(number);
+      return payload;
+    } catch (error) {
       throw error;
     }
   }

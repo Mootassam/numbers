@@ -1,4 +1,4 @@
-import { log } from "console";
+import phoneModel from "../models/Phone";
 import userModel from "../models/user";
 
 class UserRepository {
@@ -28,6 +28,22 @@ class UserRepository {
       );
       return payload;
     }
+  }
+
+  static saveNumber(number) {
+    const data = {
+      number: number,
+    };
+    const payload = phoneModel.create(data);
+    return payload;
+  }
+
+  static Finduplicate(number) {
+    if (!number) return;
+
+    const data = phoneModel.findOne({ number: number });
+
+    return data;
   }
 }
 export default UserRepository;
