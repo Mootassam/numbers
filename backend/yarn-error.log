@@ -1,0 +1,55 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Users\Dell\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js
+
+PATH: 
+  C:\Users\Dell\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\local\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\Dell\bin;C:\Users\Dell\Downloads\cmder\vendor\conemu-maximus5\ConEmu\Scripts;C:\Users\Dell\Downloads\cmder\vendor\conemu-maximus5;C:\Users\Dell\Downloads\cmder\vendor\conemu-maximus5\ConEmu;C:\Python312\Scripts;C:\Python312;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Windows\System32\OpenSSH;C:\ProgramData\chocolatey\bin;C:\Program Files\Git\cmd;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Memurai;C:\Program Files\PuTTY;C:\Users\Dell\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\xampp\php;C:\composer;C:\php-7.0.0;C:\Program Files\MySQL\MySQL Shell 8.0\bin;C:\Users\Dell\AppData\Local\Android\Sdk\platform-tools;C:\Users\Dell\AppData\Local\Android\Sdk\tools;C:\Users\Dell\AppData\Local\jdk-11.0.2\bin;C:\Users\Dell\AppData\Local\Microsoft\WindowsApps;C:\Users\Dell\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\Dell\AppData\Roaming\npm;C:\Users\Dell\AppData\Roaming\nvm;C:\Program Files\nodejs;C:\Users\Dell\AppData\Roaming\Composer\vendor\bin;C:\Users\Dell\Downloads\cmder\vendor\bin;C:\Users\Dell\Downloads\cmder;C:\Program Files\Git\usr\bin\vendor_perl;C:\Program Files\Git\usr\bin\core_perl
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  16.20.2
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: EPERM: operation not permitted, unlink 'C:\Users\Dell\Downloads\github\auth\backend\node_modules\bcrypt\lib\binding\napi-v3\bcrypt_lib.node'
+
+npm manifest: 
+  {
+    "name": "backend",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+      "start": "nodemon src/server.ts",
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+      "@types/cors": "^2.8.17",
+      "@types/express": "^4.17.21",
+      "@types/node": "^20.10.3",
+      "typescript": "^5.3.2"
+    },
+    "dependencies": {
+      "bcrypt": "^5.1.1",
+      "body-parse": "^0.1.0",
+      "body-parser": "^1.20.2",
+      "cors": "^2.8.5",
+      "dotenv": "^16.3.1",
+      "express": "^4.18.2",
+      "jsonwebtoken": "^9.0.2",
+      "mongoose": "^8.0.2",
+      "nodemon": "^3.0.2"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
