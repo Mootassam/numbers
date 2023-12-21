@@ -19,6 +19,19 @@ function CheckNumber() {
   };
 
   const handleUpload = async () => {
+    // Check if a file is selected
+    if (!file) {
+      console.error("No file selected");
+      return;
+    }
+
+    // Check if the file type is CSV
+    if (file.type !== "text/csv") {
+      setShowError(true);
+      setError("Invalid file type. Please select a CSV file.");
+      return;
+    }
+
     const formData = new FormData();
     formData.append("file", file);
 
@@ -31,7 +44,7 @@ function CheckNumber() {
       setDuplicate(response?.data?.duplicateNumber);
 
       // Reset values after successful upload
-
+      setFile(null); // Reset the file input
       setNumber("");
       setSuccess(true);
 
@@ -44,6 +57,7 @@ function CheckNumber() {
       throw error;
     }
   };
+
   const SubmitNumber = () => {
     if (!number || number === "0") {
       setError("Write a valid number. Thank you.");
@@ -90,6 +104,19 @@ function CheckNumber() {
     document.body.removeChild(link);
   };
 
+  const handleNumericInputChange = (e) => {
+    const inputValue = e.target.value;
+    const isValidInput = /^(\+|-)?\d*$/g.test(inputValue);
+
+    if (isValidInput) {
+      setNumber(inputValue);
+    } else {
+      setShowError(true);
+      setError(
+        "Please enter a valid numeric value (only digits and '+' allowed)."
+      );
+    }
+  };
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       setShowError(false);
@@ -152,7 +179,8 @@ function CheckNumber() {
                 placeholder="Write the number"
                 className="w-full pl-3 pr-3 pt-2 pb-2"
                 name="number"
-                onChange={(e) => setNumber(e.target.value)}
+                value={number}
+                onChange={handleNumericInputChange}
               />
             </div>
           )}
@@ -190,7 +218,7 @@ function CheckNumber() {
         )}
 
         {showError && (
-          <span className="bg-red-500 text-white w-[400px] flex items-center justify-center left-0 right-0 m-auto mt-10 pt-1 pb-1">
+          <span className="bg-red-500 text-white  flex items-center justify-center left-0 right-0 m-auto mt-10 pt-1 pb-1">
             {error}
           </span>
         )}
