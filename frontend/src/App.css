@@ -10,7 +10,7 @@ input {
 .page_404 {
   display: flex;
   align-items: center;
-justify-content: center;
+  justify-content: center;
   background: #fff;
   font-family: "Arvo", serif;
 }
@@ -49,4 +49,17 @@ justify-content: center;
 }
 .contant_box_404 {
   margin-top: -50px;
+}
+
+body {
+  background-color: #dde5f4;
+}
+
+input[type="text"] {
+
+  width: 100%;
+ 
+}
+.active {
+  background-color: aquamarine;
 }

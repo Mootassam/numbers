@@ -1,6 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
+import authAxios from "../../modules/shared/axios/authAxios";
 
 function changePassword() {
+  const [oldPassword, setPassword] = useState("");
+  const [newpassword, setNewPassowrd] = useState("");
+  const changePassword = () => {
+    try {
+      const data = {
+        oldPassword,
+        newpassword,
+      };
+      authAxios.post("/changePassword", data);
+    } catch (error) {
+      console.log("====================================");
+      console.log(error);
+      console.log("====================================");
+    }
+  };
   return (
     <div className="flex items-center  h-full w-full bg-slate-300 flex-col justify-center pt-40">
       <div className="flex justify-center flex-col gap-5 max-w-[600px] w-full">
@@ -12,6 +28,7 @@ function changePassword() {
             type="text"
             placeholder="Write the old Password"
             className="pt-2 pb-2 pl-4"
+            onChange={(e) => setPassword(e.target.value)}
           />
         </div>
 
@@ -24,6 +41,7 @@ function changePassword() {
             type="text"
             placeholder="Write the old Password"
             className="pt-2 pb-2 pl-4"
+            onChange={(e) => setNewPassowrd(e.target.value)}
           />
         </div>
 
@@ -39,7 +57,10 @@ function changePassword() {
           />
         </div>
 
-        <div className="flex items-center justify-center bg-slate-600 cursor-pointer">
+        <div
+          className="flex items-center justify-center bg-slate-600 cursor-pointer"
+          onClick={() => changePassword()}
+        >
           <span className="text-white font-medium p-2 ">Confirmer</span>
         </div>
       </div>

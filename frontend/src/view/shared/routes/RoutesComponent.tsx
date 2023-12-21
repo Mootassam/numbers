@@ -6,7 +6,6 @@ import PrivateRoute from "./PrivateRoute";
 import authToken from "../../../modules/auth/authToken";
 function RoutesComponent() {
   const currentUser = authToken.get();
-
   return (
     <Switch>
       {routes.publicRoute.map((route) => (
@@ -18,7 +17,6 @@ function RoutesComponent() {
           currentUser={currentUser}
         />
       ))}
-
       {routes.privateRoute.map((route) => (
         <PrivateRoute
           exact
@@ -28,7 +26,6 @@ function RoutesComponent() {
           currentUser={currentUser}
         />
       ))}
-
       {routes.simpleRoute.map((route) => (
         <Route
           key={route.path}

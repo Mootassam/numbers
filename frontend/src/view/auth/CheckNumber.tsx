@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import authAxios from "../../modules/shared/axios/authAxios";
+import ListNumberDuplicate from "./ListNumberDuplicate";
 
 function CheckNumber() {
   const [active, setActive] = useState("add");
@@ -13,6 +14,7 @@ function CheckNumber() {
   const [duplicate, setDuplicate] = useState(0);
   const [newnumber, setnewNumber] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [listduplicate, setListDuplicate] = useState();
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -36,12 +38,17 @@ function CheckNumber() {
     formData.append("file", file);
 
     try {
-      const response = await authAxios.post("/upload", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const response = await authAxios
+        .post("/upload", formData, {
+          headers: { "Content-Type": "multipart/form-data" },
+        })
+        .catch((error) => {
+          setError(error.response.data), setShowError(true);
+        });
 
       setnewNumber(response?.data?.newNumber);
       setDuplicate(response?.data?.duplicateNumber);
+      setListDuplicate(response?.data?.arrayDuplicateNumber);
 
       // Reset values after successful upload
       setFile(null); // Reset the file input
@@ -80,6 +87,7 @@ function CheckNumber() {
     setnewNumber(0);
     setDuplicate(0);
     setShowError(false);
+    setListDuplicate();
   };
 
   const downloadCSV = () => {
@@ -107,7 +115,6 @@ function CheckNumber() {
   const handleNumericInputChange = (e) => {
     const inputValue = e.target.value;
     const isValidInput = /^(\+|-)?\d*$/g.test(inputValue);
-
     if (isValidInput) {
       setNumber(inputValue);
     } else {
@@ -130,8 +137,8 @@ function CheckNumber() {
   }, [error, file, duplicate, newnumber]);
 
   return (
-    <div className="flex items-center  h-full w-full flex-col">
-      <div className="flex justify-between  w-full max-w-[900px] mb-10 gap-8 mt-40 ">
+    <div className="flex items-center  h-full w-full flex-col relative">
+      <div className="flex justify-between  w-full max-w-[900px] mb-10 gap-8 mt-14 ">
         <div className="p-10 bg-neutral-700 text-yellow-50 flex items-center justify-center flex-col w-full">
           <span className="text-[50px]">{newnumber}</span>
           <label htmlFor="" className="text-lg">
@@ -222,6 +229,8 @@ function CheckNumber() {
 
         {/* {success && <span className="bg-green-500"> Number added</span>} */}
       </div>
+
+      {listduplicate && <ListNumberDuplicate listduplicate={listduplicate} />}
     </div>
   );
 }

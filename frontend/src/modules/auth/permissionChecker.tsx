@@ -5,8 +5,8 @@ class PermissionChecker {
   }
 
   get isAuthenticated() {
-    return false;
+    return Boolean(this.currentUser);
   }
 }
 
-export default PermissionChecker
+export default PermissionChecker;

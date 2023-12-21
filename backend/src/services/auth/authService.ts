@@ -3,6 +3,9 @@ import bcrypt from "bcrypt";
 import { error, log } from "console";
 import jwt from "jsonwebtoken";
 import Error400 from "../../errors/Error400";
+
+const BCRYPT_SALT_ROUNDS = 12;
+
 class AuthService {
   static async Signup(email, password, options) {
     try {
@@ -75,17 +78,40 @@ class AuthService {
   }
 
   static async uploadNumber(req) {
-    let number
+    let number;
     try {
       const payload = await UserRepository.uploadFile(req);
       if (payload) {
-         number = await UserRepository.checkDuplicate(payload);
-
+        number = await UserRepository.checkDuplicate(payload);
       }
       return number;
     } catch (error) {
-      console.log(error);
+      throw error;
     }
+  }
+
+  static async ChangePassword(oldPassword, newPassword, options) {
+    try {
+      const currentUser = options.currentUser;
+      const currentPassword = await UserRepository.findByPassword(
+        options.currentUser.id
+      );
+
+      const passwordsMatch = await bcrypt.compare(oldPassword, currentPassword);
+      if (!passwordsMatch) {
+        throw new Error400("Invalid password");
+      }
+      const newHashedPassword = await bcrypt.hash(
+        newPassword,
+        BCRYPT_SALT_ROUNDS
+      );
+      return UserRepository.updatePassword(
+        currentUser.id,
+        newHashedPassword,
+        true,
+        options
+      );
+    } catch (error) {}
   }
   static ForgetPassword() {}
   static ResetPassword() {}

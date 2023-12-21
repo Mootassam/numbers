@@ -7,9 +7,10 @@ function PublicRoute({ path, component: Component, currentUser, ...rest }) {
       {...rest}
       render={(props) => {
         const checkPermission = new PermissionChecker(currentUser);
+        console.log(checkPermission.currentUser);
 
         if (checkPermission.isAuthenticated) {
-          return <Redirect path="/" />;
+          return <Redirect to="/" />;
         }
 
         return <Component {...props} />;

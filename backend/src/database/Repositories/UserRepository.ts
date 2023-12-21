@@ -4,6 +4,8 @@ import userModel from "../models/user";
 import fs from "fs";
 import multer, { Multer } from "multer";
 import { promisify } from "util";
+import { IRepositoryOptions } from "./IRepositoryOptions";
+import MongooseRepository from "./MongooseRepository";
 import Error400 from "../../errors/Error400";
 
 const storage = multer.memoryStorage();
@@ -25,6 +27,24 @@ class UserRepository {
   static async findByEmail(email) {
     const payload = userModel.findOne({ email: email });
     return payload;
+  }
+
+  static async updatePassword(
+    id,
+    password,
+    invalideOldTokens: boolean,
+    options: IRepositoryOptions
+  ) {
+    const currentUser = MongooseRepository.getCurrentUser(options);
+
+    const data: any = {
+      password,
+    };
+    if (invalideOldTokens) {
+      data.jwtTokenInvalidBefore = new Date();
+    }
+
+    await userModel.updateOne({ _id: id }, data);
   }
 
   static findByPassword(userExsting) {
@@ -54,22 +74,34 @@ class UserRepository {
   }
 
   static async checkDuplicate(data) {
-    let duplicateNumber: number = 0;
-    let newNumber: number = 0;
+    let duplicateNumber = 0;
+    let newNumber = 0;
+    let arrayDuplicateNumber: number[] = [];
+
     if (!data) return;
+
     for (let index = 0; index < data?.data?.length; index++) {
-      let number = Number(data?.data[index]);
-      const isExist = await this.Finduplicate(number);
-      if (isExist) {
-        duplicateNumber += 1;
-      }
-      if (!isExist) {
-        await this.saveNumber(number);
-        newNumber += 1;
+      const number = Number(data?.data[index]);
+
+      // Check if the value is a number and not an empty string
+      if (!isNaN(number) && data.data[index].trim() !== "") {
+        const isExist = await this.Finduplicate(number);
+
+        if (isExist) {
+          duplicateNumber += 1;
+          arrayDuplicateNumber.push(Number(data?.data[index]));
+        }
+
+        if (!isExist) {
+          await this.saveNumber(number);
+          newNumber += 1;
+        }
+      } else {
+        throw new Error400("File should be content Number");
       }
     }
 
-    return { duplicateNumber, newNumber };
+    return { duplicateNumber, newNumber, arrayDuplicateNumber };
   }
 
   static async uploadFile(req) {

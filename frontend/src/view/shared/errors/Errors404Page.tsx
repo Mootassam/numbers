@@ -13,8 +13,8 @@ function Errors404Page() {
                   <h1 className="text-center ">404</h1>
                 </div>
                 <div className="contant_box_404">
-                  <h3 className="h2">Look like you're lost</h3>
-                  <p>the page you are looking for not avaible!</p>
+                  <h3 style={{fontSize:24}}>Look like you're lost</h3>
+                  <h3 style={{fontSize:24}}>the page you are looking for not avaible!</h3>
                   <Link to="/">
                     <a href="" className="link_404">
                       Go to Home
