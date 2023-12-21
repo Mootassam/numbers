@@ -2,10 +2,12 @@ import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
-
+import multer from "multer";
 const app = express();
 const routes = express.Router();
 
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 // MongoDB connection setup
 const MONGODB_URI = "mongodb://localhost:27017/auth";
 mongoose.connect(MONGODB_URI, {});

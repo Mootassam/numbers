@@ -73,6 +73,20 @@ class AuthService {
       throw error;
     }
   }
+
+  static async uploadNumber(req) {
+    let number
+    try {
+      const payload = await UserRepository.uploadFile(req);
+      if (payload) {
+         number = await UserRepository.checkDuplicate(payload);
+
+      }
+      return number;
+    } catch (error) {
+      console.log(error);
+    }
+  }
   static ForgetPassword() {}
   static ResetPassword() {}
 }
