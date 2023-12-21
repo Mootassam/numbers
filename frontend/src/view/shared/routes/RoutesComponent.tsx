@@ -1,4 +1,4 @@
-import { Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import routes from "../../routes";
 import PublicRoute from "./PublicRoute";
 import lazyRouter from "../lazyRouter";
@@ -26,6 +26,17 @@ function RoutesComponent() {
           path={route.path}
           component={lazyRouter({ loader: route.loader })}
           currentUser={currentUser}
+        />
+      ))}
+
+      {routes.simpleRoute.map((route) => (
+        <Route
+          key={route.path}
+          exact
+          path={route.path}
+          component={lazyRouter({
+            loader: route.loader,
+          })}
         />
       ))}
     </Switch>

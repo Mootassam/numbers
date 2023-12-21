@@ -130,11 +130,8 @@ function CheckNumber() {
   }, [error, file, duplicate, newnumber]);
 
   return (
-    <div
-      className="flex items-center  h-full w-full bg-slate-300 flex-col"
-      style={{ height: "100dvh" }}
-    >
-      <div className="flex justify-between w-[900px] mb-10 gap-8 mt-40 ">
+    <div className="flex items-center  h-full w-full flex-col">
+      <div className="flex justify-between  w-full max-w-[900px] mb-10 gap-8 mt-40 ">
         <div className="p-10 bg-neutral-700 text-yellow-50 flex items-center justify-center flex-col w-full">
           <span className="text-[50px]">{newnumber}</span>
           <label htmlFor="" className="text-lg">
@@ -149,7 +146,7 @@ function CheckNumber() {
         </div>
       </div>
       <div
-        className=" relative bg-white p-10 border-r-9 w-[900px] "
+        className=" relative bg-white p-10 border-r-9  w-full max-w-[900px] "
         style={{ borderRadius: 7 }}
       >
         <div className="bg-slate-400 items-center  text-center  cursor-pointer absolute flex top-0  w-full justify-between left-0 right-0 m-0 ">
