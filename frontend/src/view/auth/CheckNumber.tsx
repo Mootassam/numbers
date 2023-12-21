@@ -23,7 +23,8 @@ function CheckNumber() {
   const handleUpload = async () => {
     // Check if a file is selected
     if (!file) {
-      console.error("No file selected");
+      setError("No file selected");
+      setShowError(true);
       return;
     }
 
