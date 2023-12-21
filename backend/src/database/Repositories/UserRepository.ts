@@ -58,12 +58,13 @@ class UserRepository {
     let newNumber: number = 0;
     if (!data) return;
     for (let index = 0; index < data?.data?.length; index++) {
-      const isExist = await this.Finduplicate(data.data[index]);
+      let number = Number(data?.data[index]);
+      const isExist = await this.Finduplicate(number);
       if (isExist) {
         duplicateNumber += 1;
       }
       if (!isExist) {
-        await this.saveNumber(data.data[index]);
+        await this.saveNumber(number);
         newNumber += 1;
       }
     }

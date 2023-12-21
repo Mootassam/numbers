@@ -12,7 +12,7 @@ function CheckNumber() {
 
   const [duplicate, setDuplicate] = useState(0);
   const [newnumber, setnewNumber] = useState(0);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -23,14 +23,17 @@ function CheckNumber() {
     formData.append("file", file);
 
     try {
-      const response = await authAxios
-        .post("/upload", formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        })
-        .then((res) => {
-          setnewNumber(res?.data?.newNumber);
-          setDuplicate(res?.data?.duplicateNumber);
-        });
+      const response = await authAxios.post("/upload", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      setnewNumber(response?.data?.newNumber);
+      setDuplicate(response?.data?.duplicateNumber);
+
+      // Reset values after successful upload
+
+      setNumber("");
+      setSuccess(true);
 
       // Handle the response as needed (e.g., show success message)
       console.log("File uploaded successfully:", response.data);
@@ -52,10 +55,39 @@ function CheckNumber() {
         .then((res) => setnewNumber(1))
         .catch((error) => {
           setError(error.response.data), setShowError(true);
-          setnewNumber(0)
+          setnewNumber(0);
           setDuplicate(1);
         });
     }
+  };
+
+  const ActiveTab = (item) => {
+    setActive(item);
+    setnewNumber(0);
+    setDuplicate(0);
+    setShowError(false);
+  };
+
+  const downloadCSV = () => {
+    // Create a CSV content
+    const csvContent = "phone_Numbers";
+
+    // Create a Blob from the CSV content
+    const blob = new Blob([csvContent], { type: "text/csv" });
+
+    // Create a download link
+    const link = document.createElement("a");
+    link.href = window.URL.createObjectURL(blob);
+    link.download = "data.csv";
+
+    // Append the link to the document
+    document.body.appendChild(link);
+
+    // Trigger the click event to start the download
+    link.click();
+
+    // Remove the link from the document
+    document.body.removeChild(link);
   };
 
   useEffect(() => {
@@ -97,16 +129,18 @@ function CheckNumber() {
           <div
             style={{ backgroundColor: active === "add" ? "#F321" : "" }}
             className="flex items-center text-center justify-center w-full pt-3 pb-3 pl-6 pr-6"
-            onClick={() => setActive("add")}
+            onClick={() => ActiveTab("add")}
           >
             <span className="text-white">Add Number</span>
           </div>
           <div
             style={{ backgroundColor: active !== "add" ? "#F321" : "" }}
             className="flex items-center text-center justify-center w-full pt-3 pb-3 pl-6 pr-6"
-            onClick={() => setActive("upload")}
+            onClick={() => ActiveTab("upload")}
           >
-            <span className="text-white ">Upload Numbers</span>
+            <span className="text-white flex items-center gap-3 ">
+              Upload Numbers
+            </span>
           </div>
         </div>
 
@@ -123,8 +157,16 @@ function CheckNumber() {
             </div>
           )}
           {active === "upload" && (
-            <div className="">
+            <div className="flex justify-between">
               <input type="file" name="" id="" onChange={handleFileChange} />
+
+              <div
+                className="cursor-pointer bg-slate-700 text-white p-1 pl-9 pr-9 flex items-center text-center justify-center gap-3"
+                onClick={() => downloadCSV()}
+              >
+                <img src="/download.png" alt="" style={{ width: 20 }} />
+                <span>Download The Template</span>
+              </div>
             </div>
           )}
         </div>
@@ -153,7 +195,7 @@ function CheckNumber() {
           </span>
         )}
 
-        {success && <span className="bg-green-500"> Number added</span>}
+        {/* {success && <span className="bg-green-500"> Number added</span>} */}
       </div>
     </div>
   );
