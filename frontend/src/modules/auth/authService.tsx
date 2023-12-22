@@ -9,7 +9,9 @@ export default class AuthService {
       });
 
       return response.data;
-    } catch (error) {}
+    } catch (error) {
+
+    }
   }
   static async signupWithEmailAndPassword(email, password) {
     try {
