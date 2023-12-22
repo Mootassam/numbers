@@ -56,10 +56,36 @@ body {
 }
 
 input[type="text"] {
-
   width: 100%;
- 
 }
 .active {
   background-color: aquamarine;
+}
+
+.form__group {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+.requried {
+  color: rgb(233, 54, 54) !important;
+}
+
+.is_invalid {
+  border-color: rgb(233, 54, 54);
+  color: rgb(233, 54, 54) !important;
+}
+
+input {
+  padding: 9px 2px 9px 14px !important;
+}
+
+.error-message {
+  color: #ff0000; /* Red color for error messages */
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.error {
+  border: 1px solid #ff0000;
 }

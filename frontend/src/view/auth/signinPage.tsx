@@ -12,7 +12,7 @@ function SigninPage() {
 
     if (token) {
       authToken.set(token);
-      location.reload()
+      location.reload();
     }
   };
 
@@ -24,7 +24,9 @@ function SigninPage() {
           onSubmit={submit}
         >
           <div className="flex flex-col gap-[10px]">
-            <label htmlFor="email" className="flex font-medium">Email</label>
+            <label htmlFor="email" className="flex font-medium">
+              Email
+            </label>
             <input
               type="text"
               id="email"
@@ -33,7 +35,9 @@ function SigninPage() {
             />
           </div>
           <div className="flex flex-col">
-            <label htmlFor="password" className="font-medium flexF" >Password</label>
+            <label htmlFor="password" className="font-medium flexF">
+              Password
+            </label>
             <input
               type="password"
               id="password"
