@@ -92,33 +92,18 @@ class AuthService {
   }
 
   static async ChangePassword(oldPassword, newPassword, token) {
-    try {
-      const currentUser = jwtDecode(token);
-
-      const current = await UserRepository.findUser(currentUser["id"]);
-      const currentPassword = await UserRepository.findByPassword(current);
-
-      const passwordsMatch = await bcrypt.compare(
-        oldPassword,
-        currentPassword?.password
-      );
-      console.log("====================================");
-      console.log(passwordsMatch);
-      console.log("====================================");
-      if (!passwordsMatch) {
-        throw new Error400("Invalid password");
-      }
-      const newHashedPassword = await bcrypt.hash(newPassword, 12);
-
-      return UserRepository.updatePassword(
-        currentUser["id"],
-        newHashedPassword
-      );
-    } catch (error) {
-      console.log("====================================");
-      console.log(error);
-      console.log("====================================");
+    const currentUser = jwtDecode(token);
+    const current = await UserRepository.findUser(currentUser["id"]);
+    const currentPassword = await UserRepository.findByPassword(current);
+    const passwordsMatch = await bcrypt.compare(
+      oldPassword,
+      currentPassword?.password
+    );
+    if (!passwordsMatch) {
+      throw new Error400("Invalid password");
     }
+    const newHashedPassword = await bcrypt.hash(newPassword, 12);
+    return UserRepository.updatePassword(currentUser["id"], newHashedPassword);
   }
   static ForgetPassword() {}
   static ResetPassword() {}

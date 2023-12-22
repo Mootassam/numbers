@@ -28,19 +28,23 @@ class UserRepository {
     const payload = userModel.findOne({ email: email });
     return payload;
   }
-
-  static async updatePassword(id, password) {
-    const currentUser = await userModel.updateOne(
-      { _id: id },
-      { password: password }
-    );
-    return currentUser;
-  }
-
   static findUser(id) {
     if (!id) return;
     const currentUser = userModel.findOne({ _id: id }, { password: 1, _id: 0 });
     return currentUser;
+  }
+
+  static findById(id) {
+    if (!id) return;
+    const currentUser = userModel.findOne(
+      { _id: id },
+      { _id: 0, password: 0, email: 0 }
+    );
+    return currentUser;
+  }
+  static async updatePassword(id, password) {
+    await userModel.updateOne({ _id: id }, { password: password });
+    return "success";
   }
 
   static findByPassword(userExsting) {
