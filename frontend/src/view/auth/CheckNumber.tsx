@@ -29,15 +29,13 @@ function CheckNumber() {
     }
 
     // Check if the file type is CSV
-    if (file.type !== "text/csv") {
+    if (file?.type !== "text/csv") {
       setShowError(true);
       setError("Invalid file type. Please select a CSV file.");
       return;
     }
-
     const formData = new FormData();
     formData.append("file", file);
-
     try {
       const response = await authAxios
         .post("/upload", formData, {
@@ -46,18 +44,14 @@ function CheckNumber() {
         .catch((error) => {
           setError(error.response.data), setShowError(true);
         });
-
       setnewNumber(response?.data?.newNumber);
       setDuplicate(response?.data?.duplicateNumber);
       setListDuplicate(response?.data?.arrayDuplicateNumber);
-
-      // Reset values after successful upload
       setFile(null); // Reset the file input
       setNumber("");
       setSuccess(true);
-
       // Handle the response as needed (e.g., show success message)
-      console.log("File uploaded successfully:", response.data);
+      console.log("File uploaded successfully:", response?.data);
     } catch (error) {
       console.error("Error uploading file:", error);
 

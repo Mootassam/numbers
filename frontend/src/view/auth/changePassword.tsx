@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import authAxios from "../../modules/shared/axios/authAxios";
+import authToken from "../../modules/auth/authToken";
 
 function changePassword() {
   const [oldPassword, setPassword] = useState("");
@@ -9,13 +10,10 @@ function changePassword() {
       const data = {
         oldPassword,
         newpassword,
+        token: authToken.get(),
       };
       authAxios.post("/changePassword", data);
-    } catch (error) {
-      console.log("====================================");
-      console.log(error);
-      console.log("====================================");
-    }
+    } catch (error) {}
   };
   return (
     <div className="flex items-center  h-full w-full bg-slate-300 flex-col justify-center pt-40">

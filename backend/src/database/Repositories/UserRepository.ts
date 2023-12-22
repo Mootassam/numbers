@@ -29,22 +29,18 @@ class UserRepository {
     return payload;
   }
 
-  static async updatePassword(
-    id,
-    password,
-    invalideOldTokens: boolean,
-    options: IRepositoryOptions
-  ) {
-    const currentUser = MongooseRepository.getCurrentUser(options);
+  static async updatePassword(id, password) {
+    const currentUser = await userModel.updateOne(
+      { _id: id },
+      { password: password }
+    );
+    return currentUser;
+  }
 
-    const data: any = {
-      password,
-    };
-    if (invalideOldTokens) {
-      data.jwtTokenInvalidBefore = new Date();
-    }
-
-    await userModel.updateOne({ _id: id }, data);
+  static findUser(id) {
+    if (!id) return;
+    const currentUser = userModel.findOne({ _id: id }, { password: 1, _id: 0 });
+    return currentUser;
   }
 
   static findByPassword(userExsting) {
@@ -52,6 +48,19 @@ class UserRepository {
       const payload = userModel.findOne(
         {
           password: userExsting.password,
+        },
+        { password: 1, _id: 0 }
+      );
+      return payload;
+    }
+  }
+
+  static findPassword(id, password) {
+    if (id && password) {
+      const payload = userModel.findOne(
+        {
+          _id: id,
+          password: password,
         },
         { password: 1, _id: 0 }
       );

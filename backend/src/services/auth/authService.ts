@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import { error, log } from "console";
 import jwt from "jsonwebtoken";
 import Error400 from "../../errors/Error400";
+import { jwtDecode } from "jwt-decode";
 
 const BCRYPT_SALT_ROUNDS = 12;
 
@@ -90,28 +91,34 @@ class AuthService {
     }
   }
 
-  static async ChangePassword(oldPassword, newPassword, options) {
+  static async ChangePassword(oldPassword, newPassword, token) {
     try {
-      const currentUser = options.currentUser;
-      const currentPassword = await UserRepository.findByPassword(
-        options.currentUser.id
-      );
+      const currentUser = jwtDecode(token);
 
-      const passwordsMatch = await bcrypt.compare(oldPassword, currentPassword);
+      const current = await UserRepository.findUser(currentUser["id"]);
+      const currentPassword = await UserRepository.findByPassword(current);
+
+      const passwordsMatch = await bcrypt.compare(
+        oldPassword,
+        currentPassword?.password
+      );
+      console.log("====================================");
+      console.log(passwordsMatch);
+      console.log("====================================");
       if (!passwordsMatch) {
         throw new Error400("Invalid password");
       }
-      const newHashedPassword = await bcrypt.hash(
-        newPassword,
-        BCRYPT_SALT_ROUNDS
-      );
+      const newHashedPassword = await bcrypt.hash(newPassword, 12);
+
       return UserRepository.updatePassword(
-        currentUser.id,
-        newHashedPassword,
-        true,
-        options
+        currentUser["id"],
+        newHashedPassword
       );
-    } catch (error) {}
+    } catch (error) {
+      console.log("====================================");
+      console.log(error);
+      console.log("====================================");
+    }
   }
   static ForgetPassword() {}
   static ResetPassword() {}
